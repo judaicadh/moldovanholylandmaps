@@ -82,49 +82,70 @@ export default function WorkPage({
 
 export async function getStaticProps({ params }: { params: any }) {
   const { url, basePath } = process.env
-    ?.CANOPY_CONFIG as unknown as CanopyEnvironment;
+      ?.CANOPY_CONFIG as unknown as CanopyEnvironment;
   const baseUrl = basePath ? `${url}${basePath}` : url;
 
-  const { id, index } = MANIFESTS.find(
-    (item) => item.slug === params.slug
-  ) as any;
-  const manifest = (await fetch(id)) as Manifest;
+  const manifestEntry = MANIFESTS.find((item) => item.slug === params.slug);
 
-  /**
-   * build the seo object
-   */
+  // ❌ Bail out early if no manifest matches the slug
+  if (!manifestEntry) {
+    console.warn(`🚫 Manifest not found for slug: ${params.slug}`);
+    return { notFound: true };
+  }
+
+  const { id, index } = manifestEntry;
+
+  let manifest: Manifest;
+  try {
+    manifest = (await fetch(id)) as Manifest;
+  } catch (err) {
+    console.error(`❌ Failed to fetch manifest "${id}" for slug "${params.slug}":`, err.message);
+    return { notFound: true }; // Prevent build crash
+  }
+
+  let referencingContent = [];
+  let frontMatter = {};
+  let source = {};
+
+  try {
+    referencingContent = await getReferencingContent({
+      manifestId: manifest.id,
+      srcDir: ["content"],
+    });
+
+    const content = await getMarkdownContent({
+      slug: "_layout",
+      directory: "works",
+    });
+
+    frontMatter = content.frontMatter;
+    source = content.source;
+  } catch (err) {
+    console.warn(`⚠️ Failed to load markdown content for slug "${params.slug}":`, err.message);
+  }
+
   const seo = await buildManifestSEO(manifest, `/works/${params.slug}`);
+
   const related = FACETS.map((facet) => {
     const value = shuffle(
-      facet.values.filter((entry) => entry.docs.includes(index))
+        facet.values.filter((entry) => entry.docs.includes(index))
     );
     return `${baseUrl}/api/facet/${facet.slug}/${value[0]?.slug}.json?sort=random`;
   });
 
-  /**
-   * Find connected NextJS pages which reference this manifest
-   */
-  const referencingContent = await getReferencingContent({
-    manifestId: manifest.id,
-    // Directories in which to look for markdown files with frontmatter content
-    srcDir: ["content"],
-  });
-
-  const { frontMatter, source } = await getMarkdownContent({
-    slug: "_layout",
-    directory: "works",
-  });
-
-  /**
-   * scrub the manifest of any provider property
-   */
   delete manifest.provider;
 
   return {
-    props: { manifest, related, seo, referencingContent, source, frontMatter },
+    props: {
+      manifest,
+      related,
+      seo,
+      referencingContent,
+      source,
+      frontMatter,
+    },
   };
 }
-
 export async function getStaticPaths() {
   const paths = MANIFESTS.map((item) => ({
     params: { ...item },
