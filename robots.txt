@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://judaicadh.github.io/moldovanholylandmaps
+
+# Sitemaps
+Sitemap: https://judaicadh.github.io/moldovanholylandmaps/sitemap.xml
