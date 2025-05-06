@@ -1,0 +1,19 @@
+{
+  "collection": "https://judaicadh.github.io/IIIFCollections/collection.json",
+  "featured": [
+    "https://colenda.library.upenn.edu/items/ark:/81431/p3hm53583/manifest",
+    "https://colenda.library.upenn.edu/items/ark:/81431/p3vx06q1f/manifest"
+  ],
+  "metadata": ["Date", "Subject"],
+  "label": { "none": ["Collection Title"] },
+  "summary": {
+    "none": ["Brief description of the site and its contents."]
+  },
+  "theme": {
+    "defaultTheme": "light",
+    "accentColor": "red",
+    "grayColor": "mauve",
+    "radius": "small",
+    "scaling": "100%"
+  }
+}
