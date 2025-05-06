@@ -2,7 +2,8 @@
   "collection": "https://judaicadh.github.io/IIIFCollections/collection.json",
   "featured": [
     "https://colenda.library.upenn.edu/items/ark:/81431/p3hm53583/manifest",
-    "https://colenda.library.upenn.edu/items/ark:/81431/p3vx06q1f/manifest"
+    "https://colenda.library.upenn.edu/items/ark:/81431/p3vx06q1f/manifest",
+    "https://colenda.library.upenn.edu/items/ark:/81431/p35q4s68c/manifest"
   ],
   "metadata": ["Date", "Subject"],
   "label": { "none": ["Moldovan Family Holy Land Map Collection"] },
