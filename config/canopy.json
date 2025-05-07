@@ -5,7 +5,7 @@
     "https://colenda.library.upenn.edu/items/ark:/81431/p3vx06q1f/manifest",
     "https://colenda.library.upenn.edu/items/ark:/81431/p35q4s68c/manifest"
   ],
-  "metadata": ["Date", "Subject"],
+  "metadata": ["Date", "Subject", "Language", "Publisher", "Name"],
   "label": { "none": ["Moldovan Family Digital Holy Land Map Collection"] },
   "summary": {
     "none": ["Brief description of the site and its contents."]
